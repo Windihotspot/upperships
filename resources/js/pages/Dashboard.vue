@@ -9,23 +9,44 @@
             <TimeLine />
         </div>
 
-        <!-- Tracking Form (40%) -->
-        <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow-lg h-[300px]">
-            <p class="mb-6 text-lg font-semibold">
-                Track Another Parcel
-            </p>
-            <v-text-field
-                label="Tracking Number"
-                variant="outlined"
-                dense
-                required
-                color="blue"
-                class="w-full"
-            ></v-text-field>
-            <div class="mt-4">
-                <v-btn variant="outlined" rounded="pill" color="primary"
-                    >Track</v-btn
-                >
+        <div class="md:col-span-2">
+            <!-- Sign up form -->
+            <div class="bg-white p-6 rounded-2xl shadow-lg h-[200px] mb-4">
+                <p class="mb-2 text-sm font-semibold">
+                    Set delivery alerts for your parcel
+                </p>
+                <p class="mb-4 text-sm">
+                    Enrol in Uppership and take the worry of having your parcel
+                    sit outside for delivery
+                </p>
+                <v-btn color="#FFC400" class="btn p-1" rounded="pill">
+                    Sign up
+                    <i class="fa-solid fa-arrow-right ml-2"></i>
+                </v-btn>
+
+                <div class="flex">
+                    <p class="mt-2 text-sm">Already enrolled?</p>
+                    <v-btn color="primary" class="mx-2 btn p-2" variant="text">
+                        Log in
+                    </v-btn>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-lg h-[250px]">
+                <p class="mb-6 text-lg font-semibold">Track Another Parcel</p>
+                <v-text-field
+                    label="Tracking Number"
+                    variant="outlined"
+                    dense
+                    required
+                    color="blue"
+                    class="w-full"
+                ></v-text-field>
+                <div class="mt-4">
+                    <v-btn variant="outlined" rounded="pill" color="primary"
+                        >Track</v-btn
+                    >
+                </div>
             </div>
         </div>
     </div>

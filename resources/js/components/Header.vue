@@ -5,11 +5,8 @@
         >
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
-                <div class="flex space-x-1">
-                    <div class="h-4 w-4 rounded-full bg-white"></div>
-                    <div class="h-6 w-2 bg-secondary"></div>
-                </div>
-                <span class="text-xl font-bold">Upperships</span>
+               
+                <img class="h-[30px]" src="../components/assets/images/uppership.png" alt="">
             </a>
 
             <!-- Desktop Links -->
