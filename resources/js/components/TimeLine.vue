@@ -2,7 +2,7 @@
     <v-container style="max-width: 600px">
         <!-- shipment title -->
          <div class="border-b">
-            <p class="m-2">Your shipment ascf12344</p>
+            <p class="m-2">Your shipment <span class="font-semibold">ascf12344</span></p>
             <p class="font-bold m-2">Estimated delivery</p>
             <p class="font-bold text-blue-600 m-2">The delivery date would be provided as soon as possible</p>
 

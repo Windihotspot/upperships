@@ -19,7 +19,7 @@
                     Enrol in Uppership and take the worry of having your parcel
                     sit outside for delivery
                 </p>
-                <v-btn color="#FFC400" class="btn p-1" rounded="pill">
+                <v-btn color="#FFC400" class="btn p-1 mb-2" rounded="pill">
                     Sign up
                     <i class="fa-solid fa-arrow-right ml-2"></i>
                 </v-btn>
@@ -27,7 +27,7 @@
                 <div class="flex">
                     <p class="mt-2 text-sm">Already enrolled?</p>
                     <v-btn color="primary" class="mx-2 btn p-2" variant="text">
-                        Log in
+                        Login
                     </v-btn>
                 </div>
             </div>
