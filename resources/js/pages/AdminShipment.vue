@@ -1,75 +1,56 @@
 <script setup>
 import { ref, reactive } from "vue";
 import Header from "../components/Header.vue";
-import Footer from "../components/Footer.vue";
+import { useForm } from "@inertiajs/vue3";
 
-const shipments = ref([
-    {
-        id: 1,
-        trackingId: "123ABC",
-        sender: { name: "John Doe" },
-        receiver: { name: "Jane Smith" },
-        package: { weight: 2 },
-        status: "Pending",
-    },
-    {
-        id: 2,
-        trackingId: "456DEF",
-        sender: { name: "Alice" },
-        receiver: { name: "Bob" },
-        package: { weight: 5 },
-        status: "Shipped",
-    },
-]);
-const step = ref(1);
+const step = ref(0);
 
 const dialog = ref(false);
 const selectedShipment = ref(null);
 const statuses = ["Pending", "Shipped", "Delivered"];
 
-const form = reactive({
-    sender: { name: "" },
-    receiver: { name: "" },
-    package: { weight: "" },
+
+defineProps({
+    shipments: Array,
+});
+
+
+const form = useForm({
+    sender_name: "",
+    sender_address: "",
+    receiver_name: "",
+    receiver_address: "",
+    package_weight: "",
     status: "Pending",
 });
 
-const openDialog = (shipment) => {
+// Open dialog and populate form
+const openDialog = (shipment = null) => {
     selectedShipment.value = shipment;
     if (shipment) {
-        Object.assign(form, JSON.parse(JSON.stringify(shipment))); // Clone shipment
+        form.sender_name = shipment.sender_name;
+        form.sender_address = shipment.sender_address;
+        form.receiver_name = shipment.receiver_name;
+        form.receiver_address = shipment.receiver_address;
+        form.package_weight = shipment.package_weight;
+        form.status = shipment.status;
     } else {
-        Object.assign(form, {
-            sender: { name: "" },
-            receiver: { name: "" },
-            package: { weight: "" },
-            status: "Pending",
-        });
+        form.reset();
     }
     dialog.value = true;
 };
 
+// Save shipment (Create or Update)
 const saveShipment = () => {
-    if (selectedShipment.value) {
-        // Update existing shipment
-        const index = shipments.value.findIndex(
-            (s) => s.id === selectedShipment.value.id
-        );
-        shipments.value[index] = { ...selectedShipment.value, ...form };
-    } else {
-        // Add new shipment
-        shipments.value.push({
-            id: Date.now(),
-            trackingId: `TRK-${Date.now().toString().slice(-5)}`,
-            ...form,
+   
+        form.post("/shipments", {
+            onSuccess: () => {
+                dialog.value = false;
+            },
         });
-    }
-    dialog.value = false;
+   
 };
 
-const deleteShipment = (id) => {
-    shipments.value = shipments.value.filter((s) => s.id !== id);
-};
 
 const getStatusColor = (status) => {
     return status === "Pending"
@@ -97,56 +78,13 @@ const getStatusColor = (status) => {
                         <v-btn
                             color="primary"
                             prepend-icon="mdi-plus"
-                            @click="openDialog(null)"
+                            @click="openDialog"
                             >Add Shipment</v-btn
                         >
                     </div>
 
                     <!-- Shipment Table -->
-                    <v-table class="shadow rounded-lg">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="p-3">Tracking ID</th>
-                                <th class="p-3">Sender</th>
-                                <th class="p-3">Receiver</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="shipment in shipments"
-                                :key="shipment.id"
-                                class="border-b"
-                            >
-                                <td class="p-3">{{ shipment.trackingId }}</td>
-                                <td class="p-3">{{ shipment.sender.name }}</td>
-                                <td class="p-3">
-                                    {{ shipment.receiver.name }}
-                                </td>
-                                <td class="p-3">
-                                    <v-chip
-                                        :color="getStatusColor(shipment.status)"
-                                        >{{ shipment.status }}</v-chip
-                                    >
-                                </td>
-                                <td class="p-3 space-x-2">
-                                    <v-btn
-                                        size="small"
-                                        color="blue"
-                                        @click="openDialog(shipment)"
-                                        >Edit</v-btn
-                                    >
-                                    <v-btn
-                                        size="small"
-                                        color="red"
-                                        @click="deleteShipment(shipment.id)"
-                                        >Delete</v-btn
-                                    >
-                                </td>
-                            </tr>
-                        </tbody>
-                    </v-table>
+                    
                 </v-card-text>
             </v-card>
 
@@ -192,12 +130,12 @@ const getStatusColor = (status) => {
                                             >Sender Name</label
                                         >
                                         <v-text-field
-                                            v-model="form.sender.name"
+                                            v-model="form.sender_name"
                                             variant="outlined"
                                             placeholder="Sender Name"
                                         ></v-text-field>
                                         <v-text-field
-                                            v-model="form.sender.address"
+                                            v-model="form.sender_address"
                                             variant="outlined"
                                             placeholder="Sender Address"
                                         ></v-text-field>
@@ -216,7 +154,17 @@ const getStatusColor = (status) => {
                                             >Receiver Name</label
                                         >
                                         <v-text-field
-                                            v-model="form.receiver.name"
+                                            v-model="form.receiver_name"
+                                            variant="outlined"
+                                            placeholder="Receiver Name"
+                                        ></v-text-field>
+                                    </div>
+                                    <div>
+                                        <label class="font-semibold"
+                                            >Receiver Address</label
+                                        >
+                                        <v-text-field
+                                            v-model="form.receiver_address"
                                             variant="outlined"
                                             placeholder="Receiver Name"
                                         ></v-text-field>
@@ -239,7 +187,7 @@ const getStatusColor = (status) => {
                                                 >Weight (kg)</label
                                             >
                                             <v-text-field
-                                                v-model="form.package.weight"
+                                                v-model="form.package_weight"
                                                 type="number"
                                                 variant="outlined"
                                             ></v-text-field>
