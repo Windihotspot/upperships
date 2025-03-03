@@ -5,6 +5,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { createApp, h } from "vue";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
 
 import "@mdi/font/css/materialdesignicons.css";
@@ -38,7 +39,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
             .use(plugin)
-            
+            .use(ZiggyVue)
             .use(vuetify)
             .mount(el);
     },

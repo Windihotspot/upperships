@@ -9,11 +9,9 @@ const dialog = ref(false);
 const selectedShipment = ref(null);
 const statuses = ["Pending", "Shipped", "Delivered"];
 
-
 defineProps({
     shipments: Array,
 });
-
 
 const form = useForm({
     sender_name: "",
@@ -42,15 +40,12 @@ const openDialog = (shipment = null) => {
 
 // Save shipment (Create or Update)
 const saveShipment = () => {
-   
-        form.post("/shipments", {
-            onSuccess: () => {
-                dialog.value = false;
-            },
-        });
-   
+    form.post("/shipments", {
+        onSuccess: () => {
+            dialog.value = false;
+        },
+    });
 };
-
 
 const getStatusColor = (status) => {
     return status === "Pending"
@@ -76,6 +71,7 @@ const getStatusColor = (status) => {
                     <!-- Add Shipment Button -->
                     <div class="flex justify-end m-4">
                         <v-btn
+                            variant="text"
                             color="primary"
                             prepend-icon="mdi-plus"
                             @click="openDialog"
@@ -84,7 +80,52 @@ const getStatusColor = (status) => {
                     </div>
 
                     <!-- Shipment Table -->
-                    
+                    <v-table>
+                        <thead>
+                            <tr>
+                                <th class="text-left">Sender</th>
+                                <th class="text-left">Receiver</th>
+                                <th class="text-left">Weight (kg)</th>
+                                <th class="text-left">Status</th>
+                                <th class="text-left">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="(shipment, index) in shipments"
+                                :key="index"
+                            >
+                                <td>{{ shipment.sender_name }}</td>
+                                <td>{{ shipment.receiver_name }}</td>
+                                <td>{{ shipment.package_weight }}</td>
+                                <td>
+                                    <v-chip
+                                        :color="getStatusColor(shipment.status)"
+                                        dark
+                                    >
+                                        {{ shipment.status }}
+                                    </v-chip>
+                                </td>
+                                <td>
+                                    <v-btn
+                                        :href="
+                                            route('shipments.show', {
+                                                shipment: shipment.id,
+                                            })
+                                        "
+                                        no-uppercase
+                                        variant="text"
+                                        color="primary"
+                                        class="mr-2 normal-case text-blue-600 underline cursor-pointer hover:text-blue-900"
+                                        size="small"
+                                    >
+                                        <v-icon>mdi-open-in-new</v-icon>
+                                        View Shipment
+                                    </v-btn>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </v-table>
                 </v-card-text>
             </v-card>
 

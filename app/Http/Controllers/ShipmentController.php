@@ -57,4 +57,32 @@ class ShipmentController extends Controller
 
         return redirect()->route('shipments.index')->with('success', 'Shipment updated successfully!');
     }
+
+    public function show(Shipment $shipment)
+    {
+        return Inertia::render('ShipmentDetails', [
+            'shipment' => $shipment
+        ]);
+    }
+
+    public function trackShipment(Request $request)
+    {
+        $request->validate([
+            'tracking_id' => 'required|string',
+        ]);
+
+        $shipment = Shipment::where('tracking_id', $request->tracking_id)->first();
+
+        if (!$shipment) {
+            return Inertia::render('TrackingDetails', [
+                'error' => 'Shipment not found.',
+            ]);
+        }
+
+        return Inertia::render('TrackingDetails', [
+            'shipment' => $shipment,
+        ]);
+    }
+
+
 }
