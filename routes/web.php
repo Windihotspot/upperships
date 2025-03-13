@@ -13,6 +13,14 @@ Route::get('/tracking', function () {
   return Inertia::render('Tracking');
 });
 
+Route::get('/onboarding', function () {
+  return Inertia::render('Onboarding');
+});
+
+Route::get('/tracking', function () {
+  return Inertia::render('Tracking');
+});
+
 
 // Shipment Controller Routes
 Route::controller(ShipmentController::class)->group(function () {

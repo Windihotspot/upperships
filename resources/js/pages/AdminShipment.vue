@@ -81,19 +81,20 @@ const getStatusColor = (status) => {
 
                     <!-- Shipment Table -->
                     <v-table>
-                        <thead>
-                            <tr>
-                                <th class="text-left">Sender</th>
-                                <th class="text-left">Receiver</th>
-                                <th class="text-left">Weight (kg)</th>
-                                <th class="text-left">Status</th>
-                                <th class="text-left">Actions</th>
+                        <thead class="text-center">
+                            <tr class="text-center">
+                                <th class="text-center">Sender</th>
+                                <th class="text-center">Receiver</th>
+                                <th class="text-center">Weight (kg)</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr
                                 v-for="(shipment, index) in shipments"
                                 :key="index"
+                                class="text-center"
                             >
                                 <td>{{ shipment.sender_name }}</td>
                                 <td>{{ shipment.receiver_name }}</td>
